@@ -2,20 +2,20 @@
   "name": "FlowGTD",
   "short_name": "FlowGTD",
   "description": "A minimalist GTD task manager for focused productivity",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#09090b",
   "theme_color": "#6366f1",
   "orientation": "any",
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

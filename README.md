@@ -12,7 +12,7 @@
 [![PWA](https://img.shields.io/badge/PWA-Ready-5a0fc8?style=flat-square)](https://web.dev/progressive-web-apps/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-[Features](#-features) • [Screenshots](#-screenshots) • [Quick Start](#-quick-start) • [Keyboard Shortcuts](#-keyboard-shortcuts) • [Architecture](#-architecture) • [Roadmap](#-roadmap)
+[Features](#-features) • [Quick Start](#-quick-start) • [Keyboard Shortcuts](#-keyboard-shortcuts) • [Architecture](#-architecture) • [Deploy](#-deploy-to-github-pages) • [Roadmap](#-roadmap)
 
 </div>
 
@@ -226,6 +226,57 @@ FlowGTD supports the complete GTD workflow:
 - [ ] Natural language date parsing ("tomorrow", "next Friday")
 - [ ] Task templates
 - [ ] Statistics & analytics dashboard
+
+---
+
+## 🚀 Deploy to GitHub Pages
+
+FlowGTD includes a ready-to-use GitHub Actions workflow for automatic deployment to GitHub Pages. Every push to `main` triggers a build and deploy.
+
+### One-Time Setup
+
+1. **Push your code to GitHub:**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+   git push -u origin main
+   ```
+
+2. **Enable GitHub Pages** in your repository:
+   - Go to **Settings → Pages**
+   - Under **Source**, select **GitHub Actions**
+   - Save
+
+3. **That's it!** The workflow will automatically:
+   - Build the project with the correct base path
+   - Deploy to `https://YOUR_USERNAME.github.io/YOUR_REPO/`
+
+### Manual Deployment
+
+You can also trigger a deploy manually:
+- Go to the **Actions** tab
+- Select **Deploy to GitHub Pages**
+- Click **Run workflow**
+
+### How It Works
+
+```
+.github/workflows/deploy.yml
+```
+
+The workflow uses:
+- `GITHUB_PAGES_BASE` env var → sets Vite's `base` path to `/<repo-name>/`
+- `actions/upload-pages-artifact@v3` → packages the `dist/` folder
+- `actions/deploy-pages@v4` → publishes to GitHub Pages
+
+### Custom Domain (Optional)
+
+To use a custom domain:
+1. Add a `CNAME` file in `public/` with your domain (e.g., `flowgtd.app`)
+2. Configure DNS per [GitHub's docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)
 
 ---
 
