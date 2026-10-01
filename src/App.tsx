@@ -87,6 +87,27 @@ function App() {
     setTasks((prev) => [newTask, ...prev]);
   }, [tasks]);
 
+  const addTaskFromPartial = useCallback((partial: Partial<Task>) => {
+    if (!partial.title?.trim()) return;
+    const status = partial.status || 'inbox';
+    const newTask: Task = {
+      id: uuidv4(),
+      title: partial.title.trim(),
+      notes: partial.notes || '',
+      status,
+      projectId: partial.projectId || null,
+      context: partial.context || null,
+      timeEstimate: partial.timeEstimate || null,
+      energyLevel: partial.energyLevel || null,
+      dueDate: partial.dueDate || null,
+      delegatedTo: partial.delegatedTo || null,
+      createdAt: new Date().toISOString(),
+      completedAt: null,
+      order: 0,
+    };
+    setTasks((prev) => [newTask, ...prev]);
+  }, []);
+
   const updateTask = useCallback((updatedTask: Task) => {
     setTasks((prev) =>
       prev.map((t) => (t.id === updatedTask.id ? updatedTask : t))
@@ -226,6 +247,7 @@ function App() {
           onDeleteTask={deleteTask}
           onAddProject={addProject}
           onDeleteProject={deleteProject}
+          onAddTask={addTaskFromPartial}
         />
       );
     }
@@ -240,11 +262,21 @@ function App() {
           onSelectTask={handleSelectTask}
           onCompleteTask={completeTask}
           onDeleteTask={deleteTask}
+          onAddTask={addTaskFromPartial}
         />
       );
     }
 
     const { title, subtitle } = viewTitles[currentView];
+
+    const defaultStatusMap: Record<ViewType, TaskStatus> = {
+      inbox: 'inbox',
+      next: 'next_action',
+      waiting: 'waiting_for',
+      someday: 'someday_maybe',
+      projects: 'next_action',
+      contexts: 'next_action',
+    };
 
     return (
       <TaskList
@@ -257,6 +289,8 @@ function App() {
         onSelectTask={handleSelectTask}
         onCompleteTask={completeTask}
         onDeleteTask={deleteTask}
+        onAddTask={addTaskFromPartial}
+        defaultStatus={defaultStatusMap[currentView]}
         showFilters={currentView === 'next'}
         groupByContext={currentView === 'next'}
         emptyMessage={

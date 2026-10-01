@@ -10,6 +10,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { Task, Project } from '../types';
+import QuickAdd from './QuickAdd';
 
 interface ProjectsViewProps {
   projects: Project[];
@@ -23,6 +24,7 @@ interface ProjectsViewProps {
   onDeleteTask: (id: string) => void;
   onAddProject: (name: string, description: string) => void;
   onDeleteProject: (id: string) => void;
+  onAddTask?: (partial: Partial<Task>) => void;
 }
 
 const colors = ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
@@ -39,6 +41,7 @@ export default function ProjectsView({
   onDeleteTask,
   onAddProject,
   onDeleteProject,
+  onAddTask,
 }: ProjectsViewProps) {
   const [showNewProject, setShowNewProject] = useState(false);
   const [newName, setNewName] = useState('');
@@ -118,6 +121,16 @@ export default function ProjectsView({
             <span>{completedCount} completed</span>
           </div>
         </div>
+
+        {/* Quick Add for this project */}
+        {onAddTask && (
+          <QuickAdd
+            projects={projects}
+            theme={theme}
+            defaultStatus="next_action"
+            onAdd={(partial) => onAddTask({ ...partial, projectId: project.id })}
+          />
+        )}
 
         {/* Next Action highlight */}
         {nextAction && (
