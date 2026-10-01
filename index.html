@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>FlowGTD – Getting Things Done</title>
+    <meta name="description" content="A minimalist, distraction-free GTD task manager. Capture, organize, and execute with clarity." />
+    <meta name="theme-color" content="#6366f1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FlowGTD" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <style>
+      html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
+      html.light, html.light body { background-color: #fafafa !important; color: #000; }
+      html.dark, html.dark body { background-color: #09090b !important; color: #fff; }
+    </style>
+    <script>
+      (function () {
+        const stored = localStorage.getItem('gtd-app-state');
+        let theme = 'light';
+        try {
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed.theme === 'dark') theme = 'dark';
+          }
+        } catch (e) {}
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(theme);
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
