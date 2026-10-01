@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AtSign, Home, Phone, Monitor, Briefcase, MapPin } from 'lucide-react';
 import { Task, Project, Context } from '../types';
 import TaskItem from './TaskItem';
+import QuickAdd from './QuickAdd';
 
 interface ContextsViewProps {
   tasks: Task[];
@@ -11,6 +12,7 @@ interface ContextsViewProps {
   onSelectTask: (id: string) => void;
   onCompleteTask: (id: string) => void;
   onDeleteTask: (id: string) => void;
+  onAddTask?: (partial: Partial<Task>) => void;
 }
 
 const contextConfig: { value: Context; label: string; icon: React.ReactNode; color: string }[] = [
@@ -29,6 +31,7 @@ export default function ContextsView({
   onSelectTask,
   onCompleteTask,
   onDeleteTask,
+  onAddTask,
 }: ContextsViewProps) {
   const [activeContext, setActiveContext] = useState<Context | null>(null);
 
@@ -71,6 +74,16 @@ export default function ContextsView({
             </span>
           </div>
         </div>
+
+        {/* Quick Add for this context */}
+        {onAddTask && (
+          <QuickAdd
+            projects={projects}
+            theme={theme}
+            defaultStatus="next_action"
+            onAdd={(partial) => onAddTask({ ...partial, context: activeContext })}
+          />
+        )}
 
         <div className="flex-1 overflow-y-auto">
           {ctxTasks.length === 0 ? (

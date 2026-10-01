@@ -8,9 +8,10 @@ import {
   BatteryLow,
   Plus,
 } from 'lucide-react';
-import { Task, Project, Context } from '../types';
+import { Task, Project, Context, TaskStatus } from '../types';
 import { filterTasks } from '../store';
 import TaskItem from './TaskItem';
+import QuickAdd from './QuickAdd';
 
 interface TaskListProps {
   title: string;
@@ -22,6 +23,8 @@ interface TaskListProps {
   onSelectTask: (id: string) => void;
   onCompleteTask: (id: string) => void;
   onDeleteTask: (id: string) => void;
+  onAddTask: (partial: Partial<Task>) => void;
+  defaultStatus: TaskStatus;
   showFilters?: boolean;
   groupByContext?: boolean;
   emptyMessage?: string;
@@ -44,6 +47,8 @@ export default function TaskList({
   onSelectTask,
   onCompleteTask,
   onDeleteTask,
+  onAddTask,
+  defaultStatus,
   showFilters = false,
   groupByContext = false,
   emptyMessage = 'No tasks here',
@@ -213,6 +218,14 @@ export default function TaskList({
           </div>
         )}
       </div>
+
+      {/* Quick Add */}
+      <QuickAdd
+        projects={projects}
+        theme={theme}
+        defaultStatus={defaultStatus}
+        onAdd={onAddTask}
+      />
 
       {/* Task list */}
       <div className="flex-1 overflow-y-auto">
