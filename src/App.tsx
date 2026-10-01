@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Plus, Search, Menu, X } from 'lucide-react';
+import { Plus, Search, Menu, X, Settings } from 'lucide-react';
 import { Task, Project, ViewType, TaskStatus, Context } from './types';
 import { getInitialState, persistState, getTasksByStatus } from './store';
 import Sidebar from './components/Sidebar';
@@ -10,6 +10,7 @@ import TaskDetail from './components/TaskDetail';
 import ProjectsView from './components/ProjectsView';
 import ContextsView from './components/ContextsView';
 import CommandPalette from './components/CommandPalette';
+import SettingsModal from './components/SettingsModal';
 
 function App() {
   // Load initial state
@@ -24,6 +25,7 @@ function App() {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [quickCaptureText, setQuickCaptureText] = useState('');
   const [showQuickCapture, setShowQuickCapture] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Persist state
   useEffect(() => {
@@ -152,6 +154,15 @@ function App() {
     );
     if (selectedProjectId === id) setSelectedProjectId(null);
   }, [selectedProjectId]);
+
+  // Import handler
+  const handleImport = useCallback((data: { tasks: Task[]; projects: Project[]; theme: 'light' | 'dark' }) => {
+    setTasks(data.tasks);
+    setProjects(data.projects);
+    setTheme(data.theme);
+    setSelectedTaskId(null);
+    setSelectedProjectId(null);
+  }, []);
 
   // Navigation
   const handleViewChange = (view: ViewType) => {
@@ -327,6 +338,14 @@ function App() {
             <Search size={18} />
           </button>
           <button
+            onClick={() => setSettingsOpen(true)}
+            className={`p-2 rounded-lg transition-colors ${
+              theme === 'dark' ? 'hover:bg-zinc-800 text-zinc-400' : 'hover:bg-zinc-100 text-zinc-500'
+            }`}
+          >
+            <Settings size={18} />
+          </button>
+          <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className={`p-2 rounded-lg transition-colors ${
               theme === 'dark' ? 'hover:bg-zinc-800 text-zinc-400' : 'hover:bg-zinc-100 text-zinc-500'
@@ -348,6 +367,7 @@ function App() {
           collapsed={!sidebarOpen}
           onToggleCollapse={() => setSidebarOpen(!sidebarOpen)}
           taskCounts={taskCounts}
+          onSettingsClick={() => setSettingsOpen(true)}
         />
 
         {/* Main content area */}
@@ -451,6 +471,16 @@ function App() {
         onNavigate={handleCommandPaletteNavigate}
         onSelectTask={handleCommandPaletteSelectTask}
         onQuickAdd={handleCommandPaletteQuickAdd}
+      />
+
+      {/* Settings modal */}
+      <SettingsModal
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        theme={theme}
+        tasks={tasks}
+        projects={projects}
+        onImport={handleImport}
       />
     </div>
   );
