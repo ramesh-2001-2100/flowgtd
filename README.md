@@ -14,6 +14,12 @@
 
 [Features](#-features) • [Quick Start](#-quick-start) • [Keyboard Shortcuts](#-keyboard-shortcuts) • [Architecture](#-architecture) • [Deploy](#-deploy-to-github-pages) • [Roadmap](#-roadmap)
 
+### 🌐 Live Demo
+
+**[Try FlowGTD →](https://YOUR_USERNAME.github.io/YOUR_REPO/)**
+
+*Replace `YOUR_USERNAME` and `YOUR_REPO` with your actual GitHub username and repository name.*
+
 </div>
 
 ---
@@ -253,6 +259,8 @@ FlowGTD includes a ready-to-use GitHub Actions workflow for automatic deployment
 3. **That's it!** The workflow will automatically:
    - Build the project with the correct base path
    - Deploy to `https://YOUR_USERNAME.github.io/YOUR_REPO/`
+   
+   > 💡 **Find your live URL**: Go to **Settings → Pages** — your deployed URL will be displayed at the top of the page.
 
 ### Manual Deployment
 
