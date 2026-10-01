@@ -10,6 +10,7 @@ import {
   Moon,
   ChevronLeft,
   ChevronRight,
+  Settings,
 } from 'lucide-react';
 import { ViewType } from '../types';
 
@@ -21,6 +22,7 @@ interface SidebarProps {
   collapsed: boolean;
   onToggleCollapse: () => void;
   taskCounts: Record<string, number>;
+  onSettingsClick?: () => void;
 }
 
 const navItems: { id: ViewType; label: string; icon: React.ReactNode }[] = [
@@ -40,6 +42,7 @@ export default function Sidebar({
   collapsed,
   onToggleCollapse,
   taskCounts,
+  onSettingsClick,
 }: SidebarProps) {
   return (
     <aside
@@ -119,7 +122,7 @@ export default function Sidebar({
       </nav>
 
       {/* Footer */}
-      <div className={`px-2 py-3 border-t ${
+      <div className={`px-2 py-3 border-t space-y-1 ${
         theme === 'dark' ? 'border-zinc-800' : 'border-zinc-200'
       }`}>
         <button
@@ -133,6 +136,19 @@ export default function Sidebar({
           {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           {!collapsed && <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
         </button>
+        {onSettingsClick && (
+          <button
+            onClick={onSettingsClick}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+              theme === 'dark'
+                ? 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
+                : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+            } ${collapsed ? 'justify-center' : ''}`}
+          >
+            <Settings size={20} />
+            {!collapsed && <span>Import / Export</span>}
+          </button>
+        )}
       </div>
     </aside>
   );
